@@ -1,0 +1,1 @@
+{"rsync":{"/vagrant":{"type":"rsync","rsync__exclude":[".git/"],"guestpath":"/vagrant","hostpath":"C:/Users/ghddm/Desktop/sub/personal/devops/week3/Runner","disabled":false,"__vagrantfile":true,"exclude":[".git/"],"owner":"vagrant","group":"vagrant"}}}

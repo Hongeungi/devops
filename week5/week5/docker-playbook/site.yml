@@ -1,0 +1,7 @@
+---
+- hosts: dockers
+  become: yes
+  connection: local
+  roles:
+    - docker
+

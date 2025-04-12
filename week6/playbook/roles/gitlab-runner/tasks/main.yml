@@ -1,0 +1,49 @@
+---
+- name: Get GitLab Runner installation script
+  get_url:
+    url: https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh
+    dest: /tmp/gitlab-runner.deb.sh
+    mode: 0744
+- name: Install GitLab Runner
+  command: bash /tmp/gitlab-runner.deb.sh
+  args:
+    creates: "/etc/apt/sources.list.d/runner_gitlab-runner.list"
+  become: true
+  
+- name: Install GitLab Runner by APT
+  apt: name="gitlab-runner" state=latest
+
+- name: Register Shell Runner to GitLab
+  command: >
+    gitlab-runner 
+    register
+    --non-interactive
+    --url {{ gitlab_url }}
+    --registration-token {{ gitlab_runner_token }}
+    --description "Shell Runner"
+    --executor "shell"
+    --tag-list "shell"
+    --run-untagged="false"
+    --locked="false"
+    --access-level="not_protected"
+  become: true
+  when: gitlab_url is defined and gitlab_runner_token is defined
+
+- name: Register Docker Runner to GitLab
+  command: >
+    gitlab-runner
+    register
+    --non-interactive
+    --url {{ gitlab_url }}
+    --registration-token {{ gitlab_runner_token }}
+    --description "Docker Runner"
+    --executor "docker"
+    --docker-image "docker:stable"
+    --docker-privileged
+    --docker-disable-cache
+    --docker-oom-kill-disable 
+    --tag-list "docker"
+    --run-untagged="true"
+    --locked="false"
+    --access-level="not_protected"
+  when: gitlab_url is defined and gitlab_runner_token is defined

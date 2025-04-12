@@ -47,3 +47,11 @@
     --locked="false"
     --access-level="not_protected"
   when: gitlab_url is defined and gitlab_runner_token is defined
+
+- name: Add gitlab-runner setting Nopassword Access
+  template:
+    src: gitlab-runner-sudoers.j2
+    dest: /etc/sudoers.d/gitlab-runner
+    owner: root
+    group: root
+    mode: '0440'

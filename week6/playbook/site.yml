@@ -1,9 +1,7 @@
 ---
-- hosts: runners
+- hosts: webservers
   become: yes
   connection: local
   roles:
-    - docker
-    - gitlab-runner
-    - serverspec
+    - nginx
 
